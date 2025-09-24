@@ -1,0 +1,644 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "63ad6577-ec8f-4a12-ba55-4d899dafadb6",
+      "name": "Gmail Trigger",
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BDJEMqf3fWHp0Vix",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K",
+          "mode": "list",
+          "cachedResultName": "SIH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        192
+      ],
+      "id": "9307e532-e814-4922-9aa1-7893c77b113a",
+      "name": "Google Drive Trigger",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "amRQyLp07CfqwVXY",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K",
+          "mode": "list",
+          "cachedResultName": "SIH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        384
+      ],
+      "id": "df401077-2a02-4762-ae32-53068f2e8b6d",
+      "name": "Google Drive Trigger1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uwTfni7AbMhJjppO",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K",
+          "mode": "list",
+          "cachedResultName": "SIH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K"
+        },
+        "event": "folderCreated"
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        576
+      ],
+      "id": "338627a4-9c3f-4fb5-82bc-3cdb6cebb371",
+      "name": "Google Drive Trigger2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uwTfni7AbMhJjppO",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K",
+          "mode": "list",
+          "cachedResultName": "SIH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K"
+        },
+        "event": "folderUpdated"
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        768
+      ],
+      "id": "af686eaa-b431-4cf0-aa80-27fe0e03dd52",
+      "name": "Google Drive Trigger3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uwTfni7AbMhJjppO",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K",
+          "mode": "list",
+          "cachedResultName": "SIH",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDAovO4qPZ9MHMzaph0anAefl5VVBD5K"
+        },
+        "event": "watchFolderUpdated"
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        960
+      ],
+      "id": "5a7d979d-2e8c-437c-ae48-a216a4eacbbc",
+      "name": "Google Drive Trigger4",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "uwTfni7AbMhJjppO",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "upload the file",
+        "formDescription": "we'll get back to you",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "upload your  file ",
+              "fieldType": "file",
+              "acceptFileTypes": ".pdf",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -32,
+        1152
+      ],
+      "id": "720fd0c3-5476-4be0-915b-15d712264eb3",
+      "name": "On form submission",
+      "webhookId": "0bfa6fce-f36c-420a-a1c5-bd28d3d33b06",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "numberInputs": 10
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        192,
+        544
+      ],
+      "id": "647e6108-4431-4c5a-9ba0-c5ea1c9c98dc",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "translateTo": "en"
+      },
+      "type": "n8n-nodes-base.googleTranslate",
+      "typeVersion": 2,
+      "position": [
+        640,
+        672
+      ],
+      "id": "fc236e28-a821-4ab6-b672-faf5298be301",
+      "name": "Translate a language",
+      "credentials": {
+        "googleTranslateOAuth2Api": {
+          "id": "sGtaRR8TxG6u9HYL",
+          "name": "Google Translate account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI Document Processing Agent.\nYour task is to process extracted text from a document and return structured JSON output.\n\nSteps:\n\nRead the full extracted text carefully.\n\nGenerate a concise summary (3–5 bullet points).\n\nClassify the document into one of the predefined roles:\n[\"Engineering\", \"HR\", \"Finance\", \"Procurement\", \"Legal\", \"Safety\", \"General/Other\"].\n\nIdentify any deadlines, due dates, or timelines mentioned (format as YYYY-MM-DD if possible). If no deadline is found, return \"None\".\n\nReturn the results strictly in the following JSON format without extra commentary:\n\n{\n\"initialText\": \"<the original extracted text>\",\n\"summary\": \"<short bullet-point summary>\",\n\"deadline\": \"<deadline date or None>\",\n\"roleClassified\": \"<selected role>\"\n}\n\nExample Input:\nThe Engineering Department must submit the safety compliance report by 15th October 2025. This report ensures adherence to railway standards and must be reviewed by the safety officer.\n\nExample Output:\n{\n\"initialText\": \"The Engineering Department must submit the safety compliance report by 15th October 2025. This report ensures adherence to railway standards and must be reviewed by the safety officer.\",\n\"summary\": \"- Engineering to submit safety compliance report\\n- Must align with railway standards\\n- Requires review by Safety Officer\",\n\"deadline\": \"2025-10-15\",\n\"roleClassified\": \"Engineering\"\n}\n\n\nTHE TEXT INPUT:\n {{ $json.translatedText }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        896,
+        672
+      ],
+      "id": "2a312d17-123a-45ca-8f33-cc5ac46a755f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        864,
+        896
+      ],
+      "id": "b9e2fd8c-8f50-4206-8e2d-7b1e3afbcb52",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "udVFBrUAq6Fkr2kP",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output.roleClassified }}",
+                    "rightValue": "General/Other",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "19ce532f-57e8-4baf-85df-d6ec37bb653f"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "69eaecf0-ad81-4dd7-8737-48044ad8e631",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5a7412cf-89cb-4da7-9a39-970bf3377345",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1264,
+        656
+      ],
+      "id": "7eb746b6-7806-414b-b02e-8732c441b81c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "2dfe976a-030d-47fe-bf5c-a8e12c460042",
+        "options": {
+          "allowedOrigins": "*",
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        1344
+      ],
+      "id": "51d6d8b7-e042-4c23-86c5-7af851bc979d",
+      "name": "Webhook",
+      "webhookId": "2dfe976a-030d-47fe-bf5c-a8e12c460042",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "upload_your__file_",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        416,
+        672
+      ],
+      "id": "3e5738ae-dbc6-404a-b003-92c2d501c087",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "\n{\n\"initialText\": \"The Engineering Department must submit the safety compliance report by 15th October 2025. This report ensures adherence to railway standards and must be reviewed by the safety officer.\",\n\"summary\": \"- Engineering to submit safety compliance report\\n- Must align with railway standards\\n- Requires review by Safety Officer\",\n\"deadline\": \"2025-10-15\",\n\"roleClassified\": \"Engineering\"\n}",
+        "autoFix": true,
+        "customizeRetryPrompt": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        992,
+        896
+      ],
+      "id": "61dde96c-d451-4e42-b548-bf554fa5a1d1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        1104
+      ],
+      "id": "613bf208-6532-4328-aa3e-09fd51f7f679",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "udVFBrUAq6Fkr2kP",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 8
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translate a language": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [],
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 9
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Translate a language",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bdae9aef-41cb-4e12-8f33-713055090008",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3d01ea40eb5c5004e60533626c90f3131deb62afb162f40a7a538cd5054fb6db"
+  },
+  "id": "2vKnyN8gXJi8Ja0S",
+  "tags": []
+}
