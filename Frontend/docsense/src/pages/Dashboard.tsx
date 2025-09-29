@@ -140,15 +140,14 @@ const Dashboard: React.FC = () => {
         
         if (user?.role === 'superuser') {
           // Fetch admin dashboard data
-          const [usersResponse, docsResponse] = await Promise.all([
+          const [usersResponse] = await Promise.all([
             adminAPI.getAllUsers(),
-            userAPI.getDocuments()
+            // userAPI.getDocuments()
           ]);
           
           setStats(usersResponse.data.data.stats);
         } else {
-          // Fetch user dashboard data
-          await userAPI.getDocuments();
+          // Fetch user dashboard data (placeholder)
         }
       } catch (error) {
         console.error('Error fetching dashboard data:', error);

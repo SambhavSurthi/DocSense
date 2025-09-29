@@ -15,8 +15,7 @@ import {
   UserCheck,
   UserX,
   Search,
-  Filter,
-  MoreVertical
+  Filter
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
