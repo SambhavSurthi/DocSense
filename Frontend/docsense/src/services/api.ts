@@ -1,8 +1,17 @@
 import axios from 'axios';
 
+// Determine base URL from env with sensible fallbacks
+const computedBaseURL =
+  // Prefer explicit Vite env var (configure this in Netlify)
+  import.meta.env?.VITE_API_BASE_URL ||
+  // Local dev fallback
+  (typeof window !== 'undefined' && window.location.hostname === 'localhost'
+    ? 'http://localhost:5000/api'
+    : '/api');
+
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: computedBaseURL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -33,9 +42,8 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response = await axios.post('/api/auth/refresh', {}, {
-          withCredentials: true,
-        });
+        // Use the same axios instance so it respects configured baseURL
+        const response = await api.post('/auth/refresh', {});
 
         const { accessToken } = response.data.data;
         localStorage.setItem('accessToken', accessToken);
