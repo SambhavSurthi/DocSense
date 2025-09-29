@@ -332,19 +332,17 @@ const Documents: React.FC = () => {
     }
   };
 
-  // Verify document still exists on backend (HEAD request)
+  // Verify document still exists on backend by probing the view endpoint
   const isDocumentAvailable = async (documentId: string): Promise<boolean> => {
     try {
-      const res = await fetch(`${API_BASE}/documents/${documentId}/exists`, {
-        method: 'GET',
+      const res = await fetch(`${API_BASE}/documents/${documentId}/view`, {
+        method: 'HEAD',
         credentials: 'include',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
       });
-      if (!res.ok) return false;
-      const body = await res.json();
-      return !!body?.exists;
+      return res.ok;
     } catch {
       return false;
     }
