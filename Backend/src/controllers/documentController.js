@@ -451,7 +451,14 @@ export const getDownloadRequests = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
     const requests = await DownloadRequest.find(query)
-      .populate('document', 'title fileType uploadedBy')
+      .populate({
+        path: 'document',
+        select: 'title fileType uploadedBy',
+        populate: {
+          path: 'uploadedBy',
+          select: 'username email'
+        }
+      })
       .populate('requestedBy', 'username email')
       .populate('approvedBy', 'username email')
       .sort({ createdAt: -1 })

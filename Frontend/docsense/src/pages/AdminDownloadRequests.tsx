@@ -168,10 +168,10 @@ const AdminDownloadRequests: React.FC = () => {
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       return (
-        request.document.title.toLowerCase().includes(searchLower) ||
-        request.requestedBy.username.toLowerCase().includes(searchLower) ||
-        request.requestedBy.email.toLowerCase().includes(searchLower) ||
-        request.requestReason.toLowerCase().includes(searchLower)
+        (request.document?.title?.toLowerCase()?.includes(searchLower) ?? false) ||
+        (request.requestedBy?.username?.toLowerCase()?.includes(searchLower) ?? false) ||
+        (request.requestedBy?.email?.toLowerCase()?.includes(searchLower) ?? false) ||
+        (request.requestReason?.toLowerCase()?.includes(searchLower) ?? false)
       );
     }
     return true;
@@ -271,8 +271,8 @@ const AdminDownloadRequests: React.FC = () => {
                           {request.document.title}
                         </h3>
                         <p className="text-sm text-gray-500">
-                          {request.document.fileType.toUpperCase()} • 
-                          Uploaded by {request.document.uploadedBy.username}
+                          {request.document?.fileType?.toUpperCase()} • 
+                          Uploaded by {request.document?.uploadedBy?.username ?? 'Unknown'}
                         </p>
                       </div>
                     </div>
@@ -282,9 +282,9 @@ const AdminDownloadRequests: React.FC = () => {
                         <User className="w-4 h-4 text-gray-400" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {request.requestedBy.username}
+                            {request.requestedBy?.username ?? 'Unknown user'}
                           </p>
-                          <p className="text-xs text-gray-500">{request.requestedBy.email}</p>
+                          <p className="text-xs text-gray-500">{request.requestedBy?.email ?? ''}</p>
                         </div>
                       </div>
 
@@ -325,7 +325,7 @@ const AdminDownloadRequests: React.FC = () => {
 
                       {request.approvedBy && (
                         <div className="text-sm text-gray-600">
-                          Approved by: {request.approvedBy.username}
+                          Approved by: {request.approvedBy?.username ?? 'Unknown'}
                         </div>
                       )}
                     </div>
