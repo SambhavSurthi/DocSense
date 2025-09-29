@@ -11,6 +11,9 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { login, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+  const fillDemo = () => {
+    setFormData({ email: 'superadmin@docsense.com', password: 'admin123' });
+  };
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -56,6 +59,23 @@ const Login: React.FC = () => {
               create a new account
             </Link>
           </p>
+        </div>
+        {/* Sample credentials panel */}
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <div className="text-sm text-gray-700">
+            <div className="font-semibold text-gray-900">Sample credentials</div>
+            <div className="mt-1"><span className="font-medium">Email:</span> superadmin@docsense.com</div>
+            <div><span className="font-medium">Password:</span> admin123</div>
+          </div>
+          <div className="mt-3 flex gap-2">
+            <button
+              type="button"
+              onClick={fillDemo}
+              className="px-3 py-1.5 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+            >
+              Use sample credentials
+            </button>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
