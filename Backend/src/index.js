@@ -25,22 +25,24 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Rate limiting
+// CORS configuration (allow all origins; reflect origin to support credentials) BEFORE any other middleware that might respond
+const corsOptions = {
+  origin: (origin, callback) => callback(null, true),
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+// Rate limiting (after CORS so preflight responses include CORS headers)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api/', limiter);
-
-// CORS configuration (allow all origins; reflect origin to support credentials)
-app.use(cors({
-  origin: (origin, callback) => callback(null, true),
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204
-}));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));

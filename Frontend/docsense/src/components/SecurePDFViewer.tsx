@@ -96,13 +96,15 @@ const SecurePDFViewer: React.FC<SecurePDFViewerProps> = ({
     };
   }, [documentId]);
 
+  const API_BASE = 'https://docsense-gf6s.onrender.com/api';
+
   const loadSecurePDF = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
       // Get secure PDF URL with token
-      const response = await fetch(`/api/documents/${documentId}/view`, {
+      const response = await fetch(`${API_BASE}/documents/${documentId}/view`, {
         credentials: 'include',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`

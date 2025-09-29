@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { userAPI } from '../services/api';
 import { 
   FileText, 
   Upload, 
@@ -20,6 +19,8 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import SecurePDFViewer from '../components/SecurePDFViewer';
+
+const API_BASE = 'https://docsense-gf6s.onrender.com/api';
 
 interface Document {
   id: string;
@@ -87,7 +88,7 @@ const Documents: React.FC = () => {
   const [showPDFViewer, setShowPDFViewer] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch documents with pagination and filters
@@ -104,7 +105,7 @@ const Documents: React.FC = () => {
         ...(filterStatus !== 'all' && { status: filterStatus })
       });
 
-      const response = await fetch(`/api/documents?${params}`, {
+      const response = await fetch(`${API_BASE}/documents?${params}`, {
         credentials: 'include',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -116,28 +117,34 @@ const Documents: React.FC = () => {
       const data = await response.json();
       const documents = data.data.documents;
       
-      // Check download status for each document
-      const documentsWithStatus = await Promise.all(
-        documents.map(async (doc) => {
+      // Keep only PDFs and check availability for each
+      const pdfDocs = documents.filter((d: Document) => (d.fileType || '').toLowerCase() === 'pdf');
+
+      type AvailableDoc = Document & { available?: boolean };
+      const documentsWithStatus: AvailableDoc[] = await Promise.all(
+        pdfDocs.map(async (doc: Document) => {
           try {
             const statusResponse = await checkDownloadRequestStatus(doc.id);
+            const available = await isDocumentAvailable(doc.id);
             return {
               ...doc,
               downloadRequestStatus: statusResponse?.status || 'none',
-              downloadToken: statusResponse?.downloadToken || null
+              downloadToken: statusResponse?.downloadToken || null,
+              available
             };
           } catch (error) {
             console.error(`Error checking status for document ${doc.id}:`, error);
             return {
               ...doc,
               downloadRequestStatus: 'none',
-              downloadToken: null
+              downloadToken: null,
+              available: false
             };
           }
         })
       );
       
-      setDocuments(documentsWithStatus);
+      setDocuments(documentsWithStatus.filter((d: AvailableDoc) => !!d.available));
       setStats(data.data.stats);
       setTotalPages(data.data.pagination.totalPages);
     } catch (error) {
@@ -160,7 +167,7 @@ const Documents: React.FC = () => {
     if (value.length > 2) {
       searchTimeoutRef.current = setTimeout(async () => {
         try {
-          const response = await fetch(`/api/documents?search=${encodeURIComponent(value)}&limit=5`, {
+          const response = await fetch(`${API_BASE}/documents?search=${encodeURIComponent(value)}&limit=5`, {
             credentials: 'include',
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -188,6 +195,12 @@ const Documents: React.FC = () => {
 
   // File upload handlers
   const handleFileSelect = useCallback((file: File) => {
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+    if (!isPdf) {
+      toast.error('Only PDF files are allowed.');
+      setSelectedFile(null);
+      return;
+    }
     setSelectedFile(file);
     setUploadForm(prev => ({
       ...prev,
@@ -227,7 +240,7 @@ const Documents: React.FC = () => {
       formData.append('tags', uploadForm.tags);
       formData.append('isPublic', uploadForm.isPublic.toString());
 
-      const response = await fetch('/api/documents/upload', {
+      const response = await fetch(`${API_BASE}/documents/upload`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -238,7 +251,7 @@ const Documents: React.FC = () => {
 
       if (!response.ok) throw new Error('Upload failed');
 
-      const data = await response.json();
+      await response.json();
       toast.success('Document uploaded successfully!');
       
       // Reset form and close modal
@@ -248,8 +261,8 @@ const Documents: React.FC = () => {
       
       // Refresh documents list
       fetchDocuments();
-    } catch (error) {
-      console.error('Upload error:', error);
+    } catch {
+      console.error('Upload error');
       toast.error('Failed to upload document');
     } finally {
       setIsUploading(false);
@@ -269,7 +282,7 @@ const Documents: React.FC = () => {
   // Check download request status
   const checkDownloadRequestStatus = async (documentId: string) => {
     try {
-      const response = await fetch(`/api/documents/${documentId}/download-status`, {
+      const response = await fetch(`${API_BASE}/documents/${documentId}/download-status`, {
         credentials: 'include',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -293,7 +306,7 @@ const Documents: React.FC = () => {
       const reason = prompt('Please provide a reason for downloading this document:');
       if (!reason) return;
 
-      const response = await fetch(`/api/documents/${documentId}/request-download`, {
+      const response = await fetch(`${API_BASE}/documents/${documentId}/request-download`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -313,15 +326,34 @@ const Documents: React.FC = () => {
       // Refresh documents to update status
       fetchDocuments();
     } catch (error) {
-      console.error('Download request error:', error);
-      toast.error(error.message || 'Failed to submit download request');
+      const message = error instanceof Error ? error.message : 'Failed to submit download request';
+      console.error('Download request error:', message);
+      toast.error(message);
+    }
+  };
+
+  // Verify document still exists on backend (HEAD request)
+  const isDocumentAvailable = async (documentId: string): Promise<boolean> => {
+    try {
+      const res = await fetch(`${API_BASE}/documents/${documentId}/exists`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      });
+      if (!res.ok) return false;
+      const body = await res.json();
+      return !!body?.exists;
+    } catch {
+      return false;
     }
   };
 
   // Handle approved download
-  const handleApprovedDownload = async (documentId: string, downloadToken: string) => {
+  const handleApprovedDownload = async (_documentId: string, downloadToken: string) => {
     try {
-      const downloadUrl = `/api/documents/download?token=${downloadToken}`;
+      const downloadUrl = `${API_BASE}/documents/download?token=${downloadToken}`;
       const link = document.createElement('a');
       link.href = downloadUrl;
       link.download = '';
@@ -356,27 +388,7 @@ const Documents: React.FC = () => {
 
   // Get file icon
   const getFileIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'pdf':
-        return '📄';
-      case 'docx':
-      case 'doc':
-        return '📝';
-      case 'xlsx':
-      case 'xls':
-        return '📊';
-      case 'pptx':
-      case 'ppt':
-        return '📊';
-      case 'txt':
-        return '📄';
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-        return '🖼️';
-      default:
-        return '📄';
-    }
+    return type && type.toLowerCase() === 'pdf' ? '📄' : '📄';
   };
 
   // Effects
@@ -484,7 +496,7 @@ const Documents: React.FC = () => {
           <Upload className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Upload Documents</h3>
           <p className="text-gray-600 mb-6">
-            Drag and drop files here or click to browse. Supports PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, PNG
+            Drag and drop a PDF here or click to browse. Only PDF is supported.
           </p>
           <button 
             onClick={() => fileInputRef.current?.click()}
@@ -496,7 +508,7 @@ const Documents: React.FC = () => {
           <input
             ref={fileInputRef}
             type="file"
-            multiple
+            multiple={false}
             onChange={(e) => {
               if (e.target.files && e.target.files[0]) {
                 handleFileSelect(e.target.files[0]);
@@ -504,7 +516,7 @@ const Documents: React.FC = () => {
               }
             }}
             className="hidden"
-            accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png"
+            accept=".pdf,application/pdf"
           />
         </div>
 
@@ -633,7 +645,7 @@ const Documents: React.FC = () => {
                     <div className="flex items-center">
                       <span className="text-3xl mr-3">{getFileIcon(doc.fileType)}</span>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-gray-900 truncate">
+                        <h3 className="text-lg text-wrap font-semibold text-gray-900 truncate">
                           {doc.title}
                         </h3>
                         <p className="text-sm text-gray-500">{doc.fileType.toUpperCase()}</p>
